@@ -1,0 +1,67 @@
+@import "../bower_components/bourbon/app/assets/stylesheets/bourbon";
+
+// Variables
+@import "variables/sizes";
+
+// Frameworks
+@import "../bower_components/neat/app/assets/stylesheets/neat";
+@import "mixins";
+
+#episode-header {
+    .episode-artwork {
+        @include aspect-ratio(4, 3);
+        background-size: cover;
+        color: #fff;
+        #play-episode {
+            background-color: rgba(0,0,0,0.3);
+            @include display(flex);
+            @include align-items(center);
+            @include justify-content(center);
+            cursor: pointer;
+            .dashicons {
+                font-size: 8rem;
+                width: 8rem;
+                height: 8rem;
+                text-shadow: 0px 1px 7px rgba(0,0,0,0.5);
+                &:not(.paused) {
+                    &:before {
+                        content: "\f522";
+                    }
+                }
+                &.paused {
+                    &:before {
+                        content: "\f523";
+                    }
+                }
+            }
+        }
+    }
+    display: table;
+    width: 100%;
+    color: #fff;
+    background: black;
+    .episode-artwork-container,
+    .episode-info {
+        display: table-cell;
+        width: 50%;
+        vertical-align: middle;
+    }
+    .episode-info {
+        padding: 16px;
+        h4,h2 {
+            margin: 0;
+        }
+        text-align: center;
+    }
+}
+
+// MEJS Overide
+.mejs-container {
+    width: 99.9%!important;
+}
+.mejs-playpause-button {
+    width: 6px!important;
+    button {
+        background-image: none!important;
+    }
+}

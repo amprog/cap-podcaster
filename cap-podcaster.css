@@ -1,0 +1,99 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *::after, *::before {
+  box-sizing: inherit;
+}
+
+#episode-header {
+  display: table;
+  width: 100%;
+  color: #fff;
+  background: black;
+}
+#episode-header .episode-artwork {
+  position: relative;
+  background-size: cover;
+  color: #fff;
+}
+#episode-header .episode-artwork:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 75%;
+}
+#episode-header .episode-artwork > .maintain-ratio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#episode-header .episode-artwork #play-episode {
+  background-color: rgba(0, 0, 0, 0.3);
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  box-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  cursor: pointer;
+}
+#episode-header .episode-artwork #play-episode .dashicons {
+  font-size: 8rem;
+  width: 8rem;
+  height: 8rem;
+  text-shadow: 0px 1px 7px rgba(0, 0, 0, 0.5);
+}
+#episode-header .episode-artwork #play-episode .dashicons:not(.paused):before {
+  content: "\f522";
+}
+#episode-header .episode-artwork #play-episode .dashicons.paused:before {
+  content: "\f523";
+}
+#episode-header .episode-artwork-container,
+#episode-header .episode-info {
+  display: table-cell;
+  width: 50%;
+  vertical-align: middle;
+}
+#episode-header .episode-info {
+  padding: 16px;
+  text-align: center;
+}
+#episode-header .episode-info h4, #episode-header .episode-info h2 {
+  margin: 0;
+}
+
+.mejs-container {
+  width: 99.9% !important;
+}
+
+.mejs-playpause-button {
+  width: 6px !important;
+}
+.mejs-playpause-button button {
+  background-image: none !important;
+}
+
+/*# sourceMappingURL=cap-podcaster.css.map */
