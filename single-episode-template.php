@@ -9,7 +9,11 @@ function cap_podcast_construct_player() {
     // Get Episode Media Source
     $episode_attachment_id = get_post_meta( $post_id, 'episode_file', true );
     $episode_external_file = get_post_meta( $post_id, 'external_episode_file', true );
-    $player_src = wp_get_attachment_url( $episode_attachment_id );
+    if (!empty($episode_attachment_id)) {
+        $player_src = wp_get_attachment_url( $episode_attachment_id );
+    } elseif (!empty($episode_external_file)) {
+        $player_src = $episode_external_file;
+    }
     $attr = array(
     	'src'      => ''.$player_src.'',
     	'loop'     => '',
@@ -17,6 +21,8 @@ function cap_podcast_construct_player() {
     	'preload' => 'metadata'
 	);
     $player = wp_audio_shortcode( $attr );
+
+    $download_link = '<small><a href="'.$player_src.'" download="episode'.$episode_number.'.mp3">Download this Episode</a></small>';
     // Get Episode Artwork //
     $episode_artwork_id = get_post_thumbnail_id( $post_id );
     $episode_artwork = wp_get_attachment_image_src( $episode_artwork_id, 'cap-podcast-thumbnail' );
@@ -56,14 +62,21 @@ function cap_podcast_construct_player() {
 
     });
 
+    jQuery(document).ready(function(){
+        Waves.attach('#play-episode');
+        Waves.init();
+    });
+
     </script>
     ";
-    return $markup.$player.$script;
+    return '<div class="podcast-player">'.$markup.$player.$download_link.$script.'</div>';
 }
 
 function cap_podcast_single_display($content) {
-    $player = cap_podcast_construct_player();
-    $content = $player.$content;
+    if (is_singular()) {
+        $player = cap_podcast_construct_player();
+        $content = $player.$content;
+    }
     return $content;
 }
 add_filter('the_content','cap_podcast_single_display');

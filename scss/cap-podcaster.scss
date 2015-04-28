@@ -6,7 +6,25 @@
 // Frameworks
 @import "../bower_components/neat/app/assets/stylesheets/neat";
 @import "mixins";
+.podcast-player {
+    small a {
+        font-weight: bolder;
+        text-decoration: none;
+        border-bottom: 0;
+    }
+    margin-bottom: 1rem;
+    // MEJS Overide
+    .mejs-audio {
+        margin-bottom: 0;
+    }
 
+    .mejs-playpause-button {
+        width: 6px!important;
+        button {
+            background-image: none!important;
+        }
+    }
+}
 #episode-header {
     .episode-artwork {
         @include aspect-ratio(4, 3);
@@ -45,6 +63,10 @@
         display: table-cell;
         width: 50%;
         vertical-align: middle;
+        @include media($palm){
+            display: block;
+            width: 100%;
+        }
     }
     .episode-info {
         padding: 16px;
@@ -52,16 +74,5 @@
             margin: 0;
         }
         text-align: center;
-    }
-}
-
-// MEJS Overide
-.mejs-container {
-    width: 99.9%!important;
-}
-.mejs-playpause-button {
-    width: 6px!important;
-    button {
-        background-image: none!important;
     }
 }

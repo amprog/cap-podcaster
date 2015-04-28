@@ -29,12 +29,18 @@ function cap_podcast_register() {
 		'not_found'           => __( 'Not found', 'cap_podcaster' ),
 		'not_found_in_trash'  => __( 'Not found in Trash', 'cap_podcaster' ),
 	);
+	$rewrite = array(
+		'slug'                => 'podcast',
+		'with_front'          => true,
+		'pages'               => true,
+		'feeds'               => true,
+	);
 	$args = array(
 		'label'               => __( 'cap_podcast', 'cap_podcaster' ),
 		'description'         => __( 'Podcasts', 'cap_podcaster' ),
 		'labels'              => $labels,
 		'supports'            => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', ),
-		'taxonomies'          => array( 'category', 'post_tag' ),
+		'taxonomies'          => array( 'post_tag' ),
 		'hierarchical'        => false,
 		'public'              => true,
 		'show_ui'             => true,
@@ -47,6 +53,7 @@ function cap_podcast_register() {
 		'has_archive'         => true,
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
+		'rewrite'             => $rewrite,
 		'capability_type'     => 'post',
 	);
 	register_post_type( 'cap_podcast', $args );
@@ -188,6 +195,12 @@ register_field_group(array (
 
 endif;
 
+if( function_exists('acf_add_options_page') ) {
+
+	acf_add_options_page();
+
+}
+
 
 add_image_size( 'cap-podcast-thumbnail', 600, 600, true );
 
@@ -195,8 +208,25 @@ function cap_podcast_styles_scripts() {
     wp_register_style( 'cap-podcaster',  plugin_dir_url( __FILE__ ) . 'cap-podcaster.css' );
     wp_enqueue_style( 'cap-podcaster' );
     wp_enqueue_style( 'dashicons' );
+
+	// Special Effects
+	wp_register_style( 'waves-css',  plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.css' );
+    wp_enqueue_style( 'waves-css' );
+	wp_enqueue_script( 'waves-js', plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.js', array(), '1.0', true );
+
 }
 add_action( 'wp_enqueue_scripts', 'cap_podcast_styles_scripts' );
+
+remove_all_actions( 'do_feed_rss2' );
+
+function cap_podcast_feed_xml( $for_comments ) {
+    $rss_template = plugin_dir_path( __FILE__ ) . 'rss-feed.php';
+    if( get_query_var( 'post_type' ) == 'cap_podcast' and file_exists( $rss_template ) )
+        load_template( $rss_template );
+    else
+        do_feed_rss2( $for_comments ); // Call default function
+}
+add_action( 'do_feed_rss2', 'cap_podcast_feed_xml', 10, 1 );
 
 // Check to see if color posts is active, if so then output styles.
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -213,4 +243,3 @@ if ( is_plugin_active( 'color-posts/color-posts.php' ) ) {
 $plugin_dir = plugin_dir_path( __FILE__ );
 
 include $plugin_dir.'/single-episode-template.php';
-include $plugin_dir.'/rss-feed.php';
