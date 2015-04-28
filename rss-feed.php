@@ -87,7 +87,7 @@ $podcast_author_email   = get_field('podcast_author_email','options');
             </description>
             <link><?php echo $player_src;?></link>
             <enclosure url="<?php echo $player_src;?>" length="<?php echo $media_info['length'];?>" type="audio/mpeg"/>
-            <guid><?php echo $player_src;?></guid>
+            <guid><?php the_permalink();?></guid>
             <itunes:duration><?php echo $media_info['length_formatted'];?></itunes:duration>
             <itunes:image href="<?php echo $episode_artwork_src;?>"/>
             <author><?php echo $podcast_author_email;?> (<?php echo $podcast_author;?>)</author>
