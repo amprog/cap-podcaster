@@ -7,7 +7,6 @@ Version: 1.0.0
 Author: Seth Rubenstein for Center for American Progress
 Author URI: http://sethrubenstein.info
 */
-add_filter( 'jetpack_development_mode', '__return_true' );
 
 $plugin_dir = plugin_dir_path( __FILE__ );
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
