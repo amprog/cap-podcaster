@@ -9,7 +9,12 @@ Author URI: http://sethrubenstein.info
 */
 add_filter( 'jetpack_development_mode', '__return_true' );
 
-// Register Custom Post Type
+$plugin_dir = plugin_dir_path( __FILE__ );
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+/**
+ * Register 'podcast' post type
+ */
 function cap_podcast_register() {
 
 	$labels = array(
@@ -39,7 +44,7 @@ function cap_podcast_register() {
 		'label'               => __( 'cap_podcast', 'cap_podcaster' ),
 		'description'         => __( 'Podcasts', 'cap_podcaster' ),
 		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', ),
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'revisions', ),
 		'taxonomies'          => array( 'post_tag' ),
 		'hierarchical'        => false,
 		'public'              => true,
@@ -61,155 +66,17 @@ function cap_podcast_register() {
 }
 add_action( 'init', 'cap_podcast_register', 0 );
 
-if( function_exists('register_field_group') ):
-
-register_field_group(array (
-	'key' => 'group_553e4cdaea25c',
-	'title' => 'Episode Settings',
-	'fields' => array (
-		array (
-			'key' => 'field_553e4cee5e1d0',
-			'label' => 'Media',
-			'name' => '',
-			'prefix' => '',
-			'type' => 'tab',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'placement' => 'top',
-		),
-		array (
-			'key' => 'field_553e4d2f5e1d2',
-			'label' => 'Episode File',
-			'name' => 'episode_file',
-			'prefix' => '',
-			'type' => 'file',
-			'instructions' => 'Upload your episodes MP3 (Audio only) or MP4 (Video only) file.',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'return_format' => 'id',
-			'library' => 'all',
-			'min_size' => '',
-			'max_size' => '',
-			'mime_types' => 'mp3, mp4',
-		),
-		array (
-			'key' => 'field_553e4cf65e1d1',
-			'label' => 'Externally Hosted Episode File',
-			'name' => 'external_episode_file',
-			'prefix' => '',
-			'type' => 'url',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => 'http://source.com/media/file.mp3',
-		),
-		array (
-			'key' => 'field_553e4d715e1d3',
-			'label' => 'Episode Specifics',
-			'name' => '',
-			'prefix' => '',
-			'type' => 'tab',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'placement' => 'top',
-		),
-		array (
-			'key' => 'field_553e4f4c0eac2',
-			'label' => 'Episode Number',
-			'name' => 'episode_number',
-			'prefix' => '',
-			'type' => 'text',
-			'instructions' => '',
-			'required' => 1,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'prepend' => '',
-			'append' => '',
-			'maxlength' => '',
-			'readonly' => 0,
-			'disabled' => 0,
-		),
-		array (
-			'key' => 'field_553e4d7e5e1d4',
-			'label' => 'Explicit',
-			'name' => 'explicit',
-			'prefix' => '',
-			'type' => 'true_false',
-			'instructions' => 'Some podcast directories (iTunes, Pocketcasts) have explicit tags. If this episode contains explicit content/language click the checkbox to enable to explicit tag.',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => '',
-			'default_value' => 0,
-		),
-	),
-	'location' => array (
-		array (
-			array (
-				'param' => 'post_type',
-				'operator' => '==',
-				'value' => 'cap_podcast',
-			),
-		),
-	),
-	'menu_order' => 100,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-));
-
-endif;
-
-if( function_exists('acf_add_options_page') ) {
-
-	acf_add_options_page();
-
-}
-
-
+// Create image size for podcast player and XML feed.
 add_image_size( 'cap-podcast-thumbnail', 600, 600, true );
 
+// Register stylesheet, scripts, and icons.
 function cap_podcast_styles_scripts() {
     wp_register_style( 'cap-podcaster',  plugin_dir_url( __FILE__ ) . 'cap-podcaster.css' );
     wp_enqueue_style( 'cap-podcaster' );
     wp_enqueue_style( 'dashicons' );
 
 	// Special Effects
+	// We need a check for waves if present then use that if not then use this.
 	wp_register_style( 'waves-css',  plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.css' );
     wp_enqueue_style( 'waves-css' );
 	wp_enqueue_script( 'waves-js', plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.js', array(), '1.0', true );
@@ -217,29 +84,20 @@ function cap_podcast_styles_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'cap_podcast_styles_scripts' );
 
-remove_all_actions( 'do_feed_rss2' );
-
+// Override default WP xml feed for podcast post type - use the included rss-feed.php template.
 function cap_podcast_feed_xml( $for_comments ) {
-    $rss_template = plugin_dir_path( __FILE__ ) . 'rss-feed.php';
-    if( get_query_var( 'post_type' ) == 'cap_podcast' and file_exists( $rss_template ) )
+    $rss_template = plugin_dir_path( __FILE__ ).'rss-feed.php';
+
+    if( get_query_var( 'post_type' ) == 'cap_podcast' and file_exists( $rss_template ) ) {
         load_template( $rss_template );
-    else
+    } else {
         do_feed_rss2( $for_comments ); // Call default function
+	}
 }
+remove_all_actions( 'do_feed_rss2' );
 add_action( 'do_feed_rss2', 'cap_podcast_feed_xml', 10, 1 );
 
-// Check to see if color posts is active, if so then output styles.
-include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-if ( is_plugin_active( 'color-posts/color-posts.php' ) ) {
-	function cap_podcast_player_colors( $colors_css, $color, $contrast ) {
-		$css = '#episode-header, .mejs-mediaelement {background-color: #'.$color.'!important;}';
-		$css .= 'body .mejs-container .mejs-controls {background: rgba(0,0,0,0.3)!important;}';
-		$css .= '.mejs-horizontal-volume-slider {border-bottom: 0px!important;}';
-		return $css;
-	}
-	add_filter( 'colorposts_css_output', 'cap_podcast_player_colors', 10, 3 );
-}
-
-$plugin_dir = plugin_dir_path( __FILE__ );
-
+include $plugin_dir.'/fields.php';
+include $plugin_dir.'/helpers.php';
+include $plugin_dir.'/filters.php';
 include $plugin_dir.'/single-episode-template.php';
