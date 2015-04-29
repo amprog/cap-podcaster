@@ -63,7 +63,6 @@ function cap_podcast_player( $id = null, $player_type = 'default' ) {
         </div>
         '.$episode_title.'
     </div>';
-    $media = $player;
     $script = "
     <script type='text/javascript'>
     var playerID = jQuery('#episode-".$episode_number."-".$post_id." audio').attr('id');
@@ -85,6 +84,9 @@ function cap_podcast_player( $id = null, $player_type = 'default' ) {
     });
     </script>
     ";
+    if (function_exists('cap_podcast_player_colors')) {
+        $player .= cap_podcast_player_colors($post_id);
+    }
     return '<div id="episode-'.$episode_number.'-'.$post_id.'" class="podcast-player '.$player_type.'">'.$markup.$player.$download_link.$script.'</div>';
 }
 
