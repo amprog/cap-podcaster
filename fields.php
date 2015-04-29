@@ -107,7 +107,7 @@ if( function_exists('register_field_group') ) {
     			'prefix' => '',
     			'type' => 'text',
     			'instructions' => 'This should be a short one sentence description about this episode.',
-    			'required' => 1,
+    			'required' => 0,
     			'conditional_logic' => 0,
     			'wrapper' => array (
     				'width' => '',

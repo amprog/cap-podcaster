@@ -10,8 +10,8 @@ add_filter('get_the_archive_title','cap_podcast_change_archive_title');
 // Check to see if color posts is active, if so then output styles.
 if ( is_plugin_active( 'color-posts/color-posts.php' ) ) {
 	function cap_podcast_player_colors( $colors_css, $color, $contrast ) {
-		$css = '#episode-header, .mejs-mediaelement {background-color: #'.$color.'!important;}';
-		$css .= 'body .mejs-container .mejs-controls {background: rgba(0,0,0,0.3)!important;}';
+		$css = '.episode-header, .mejs-mediaelement {background-color: #'.$color.'!important;}';
+		$css .= '.mejs-container .mejs-controls {background: rgba(0,0,0,0.3)!important;}';
 		$css .= '.mejs-horizontal-volume-slider {border-bottom: 0px!important;}';
 		return $css;
 	}

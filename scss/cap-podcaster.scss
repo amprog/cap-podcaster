@@ -8,9 +8,11 @@
 @import "mixins";
 .podcast-player {
     small a {
+        display: inline-block;
         font-weight: bolder;
         text-decoration: none;
         border-bottom: 0;
+        margin-top: 8px;
     }
     margin-bottom: 1rem;
     // MEJS Overide
@@ -24,13 +26,20 @@
             background-image: none!important;
         }
     }
+    &.mini {
+        .mejs-container { display: none!important; }
+    }
+    &.large {
+        margin-bottom: 2rem;
+    }
 }
-#episode-header {
+.episode-header {
     .episode-artwork {
         @include aspect-ratio(4, 3);
         background-size: cover;
         color: #fff;
         #play-episode {
+            color: #fff;
             background-color: rgba(0,0,0,0.3);
             @include display(flex);
             @include align-items(center);
@@ -74,5 +83,13 @@
             margin: 0;
         }
         text-align: center;
+    }
+    a.episode-info {
+        color: #fff;
+        .description {
+            text-align: justify;
+            display: block;
+            padding: 1em;
+        }
     }
 }

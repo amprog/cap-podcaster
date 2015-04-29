@@ -10,9 +10,11 @@ html {
   margin-bottom: 1rem;
 }
 .podcast-player small a {
+  display: inline-block;
   font-weight: bolder;
   text-decoration: none;
   border-bottom: 0;
+  margin-top: 8px;
 }
 .podcast-player .mejs-audio {
   margin-bottom: 0;
@@ -23,32 +25,39 @@ html {
 .podcast-player .mejs-playpause-button button {
   background-image: none !important;
 }
+.podcast-player.mini .mejs-container {
+  display: none !important;
+}
+.podcast-player.large {
+  margin-bottom: 2rem;
+}
 
-#episode-header {
+.episode-header {
   display: table;
   width: 100%;
   color: #fff;
   background: black;
 }
-#episode-header .episode-artwork {
+.episode-header .episode-artwork {
   position: relative;
   background-size: cover;
   color: #fff;
 }
-#episode-header .episode-artwork:before {
+.episode-header .episode-artwork:before {
   display: block;
   content: "";
   width: 100%;
   padding-top: 75%;
 }
-#episode-header .episode-artwork > .maintain-ratio {
+.episode-header .episode-artwork > .maintain-ratio {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
-#episode-header .episode-artwork #play-episode {
+.episode-header .episode-artwork #play-episode {
+  color: #fff;
   background-color: rgba(0, 0, 0, 0.3);
   display: -webkit-box;
   display: -moz-box;
@@ -77,37 +86,45 @@ html {
   -ms-flex-pack: center;
   cursor: pointer;
 }
-#episode-header .episode-artwork #play-episode .dashicons {
+.episode-header .episode-artwork #play-episode .dashicons {
   font-size: 100px;
   width: 100px;
   height: 100px;
   text-shadow: 0px 1px 7px rgba(0, 0, 0, 0.5);
 }
-#episode-header .episode-artwork #play-episode .dashicons:not(.paused):before {
+.episode-header .episode-artwork #play-episode .dashicons:not(.paused):before {
   content: "\f522";
 }
-#episode-header .episode-artwork #play-episode .dashicons.paused:before {
+.episode-header .episode-artwork #play-episode .dashicons.paused:before {
   content: "\f523";
 }
-#episode-header .episode-artwork-container,
-#episode-header .episode-info {
+.episode-header .episode-artwork-container,
+.episode-header .episode-info {
   display: table-cell;
   width: 50%;
   vertical-align: middle;
 }
 @media screen and (max-width: 480px) {
-  #episode-header .episode-artwork-container,
-  #episode-header .episode-info {
+  .episode-header .episode-artwork-container,
+  .episode-header .episode-info {
     display: block;
     width: 100%;
   }
 }
-#episode-header .episode-info {
+.episode-header .episode-info {
   padding: 16px;
   text-align: center;
 }
-#episode-header .episode-info h4, #episode-header .episode-info h2 {
+.episode-header .episode-info h4, .episode-header .episode-info h2 {
   margin: 0;
+}
+.episode-header a.episode-info {
+  color: #fff;
+}
+.episode-header a.episode-info .description {
+  text-align: justify;
+  display: block;
+  padding: 1em;
 }
 
 /*# sourceMappingURL=cap-podcaster.css.map */
