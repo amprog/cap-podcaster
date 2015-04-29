@@ -98,6 +98,6 @@ remove_all_actions( 'do_feed_rss2' );
 add_action( 'do_feed_rss2', 'cap_podcast_feed_xml', 10, 1 );
 
 include $plugin_dir.'/fields.php';
-include $plugin_dir.'/helpers.php';
+include $plugin_dir.'/options.php';
 include $plugin_dir.'/filters.php';
 include $plugin_dir.'/single-episode-template.php';

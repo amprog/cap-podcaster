@@ -1,6 +1,7 @@
 <?php
 /**
 * Constructs the RSS/XML feed used by podcasting apps like iTunes and Pocketcasts
+* for reference this is the iTunes feed spec sheet https://www.apple.com/itunes/podcasts/specs.html
 */
 
 if (get_field('podcast_name','options')) {
@@ -10,7 +11,7 @@ if (get_field('podcast_name','options')) {
 }
 
 if (get_field('podcast_description','options')) {
-    $podcast_description  = get_field('podcast_description','options');
+    $podcast_description  = htmlspecialchars(get_field('podcast_description','options'));
 } else {
     $podcast_description  = get_bloginfo('description');
 }
@@ -26,12 +27,13 @@ if (get_field('podcast_author_email','options')) {
 } else {
     $podcast_author_email = get_bloginfo('admin_email');
 }
+$podcast_copyright        = '&#xA9; ';
 if (get_field('podcast_copyright','options')) {
-    $podcast_copyright    = get_field('podcast_copyright','options');
+    $podcast_copyright   .= get_field('podcast_copyright','options');
 } else {
-    $podcast_copyright    = get_bloginfo('name');
+    $podcast_copyright   .= get_bloginfo('name');
 }
-$podcast_copyright       .= date("Y");
+$podcast_copyright       .= ' '.date("Y");
 
 
 ///
@@ -75,11 +77,15 @@ $podcast_subtitle        = get_field('podcast_subtitle', 'options');
             <itunes:name><?php echo $podcast_author;?></itunes:name>
             <itunes:email><?php echo $podcast_author_email;?></itunes:email>
         </itunes:owner>
-        <itunes:explicit>clean</itunes:explicit>
-        <itunes:category text="News and Politics"/>
-        <itunes:category text="Technology">
-        <itunes:category text="Podcasting"/>
-        </itunes:category>
+        <?php if (true == get_field('podcast_explicit', 'options')) {
+            $is_episode_explicit = '<itunes:explicit>yes</itunes:explicit>';
+        } else {
+            $is_episode_explicit = '<itunes:explicit>clean</itunes:explicit>';
+        }?>
+
+        <?php foreach (get_field('podcast_categories','options') as $key => $value) {
+            echo '<itunes:category text="'.htmlspecialchars($value).'"/>';
+        }?>
 
         <?php while( have_posts()) : the_post(); ?>
 
@@ -90,6 +96,10 @@ $podcast_subtitle        = get_field('podcast_subtitle', 'options');
             // Get Episode Media Source
             $episode_attachment_id = get_post_meta( $post_id, 'episode_file', true );
             $episode_external_file = get_post_meta( $post_id, 'external_episode_file', true );
+
+            $episode_cleaned_content = strip_tags(get_the_content_feed());
+            $episode_cleaned_subtitle = strip_tags($episode_subtitle);
+
             if (!empty($episode_attachment_id)) {
                 $player_src = wp_get_attachment_url( $episode_attachment_id );
             } elseif (!empty($episode_external_file)) {
@@ -109,13 +119,13 @@ $podcast_subtitle        = get_field('podcast_subtitle', 'options');
         <item>
             <title><?php the_title_rss(); ?> #<?php echo $episode_number;?></title>
             <itunes:subtitle>
-                <![CDATA[<?php echo strip_tags($episode_subtitle);?>]]>
+                <![CDATA[<?php echo htmlspecialchars($episode_cleaned_subtitle);?>]]>
             </itunes:subtitle>
             <itunes:summary>
-                <![CDATA[<?php echo strip_tags(get_the_content_feed());?>]]>
+                <![CDATA[<?php echo htmlspecialchars($episode_cleaned_content);?>]]>
             </itunes:summary>
             <description>
-                <![CDATA[<?php echo strip_tags(get_the_content_feed());?>]]>
+                <![CDATA[<?php echo htmlspecialchars($episode_cleaned_content);?>]]>
             </description>
             <link><?php echo $player_src;?></link>
             <enclosure url="<?php echo $player_src;?>" length="<?php echo $media_info['length'];?>" type="audio/mpeg"/>
@@ -129,13 +139,19 @@ $podcast_subtitle        = get_field('podcast_subtitle', 'options');
             if ($posttags) {
                 echo '<itunes:keywords>';
                 foreach($posttags as $tag) {
-                    echo $tag->name.', ';
+                    echo htmlspecialchars($tag->name).', ';
                 }
                 echo '</itunes:keywords>';
             }
             ?>
 
-            <itunes:explicit>no</itunes:explicit>
+            <?php
+            if (true == get_post_meta($post_id, 'explicit', true)) {
+                $is_episode_explicit = '<itunes:explicit>yes</itunes:explicit>';
+            } else {
+                $is_episode_explicit = '<itunes:explicit>clean</itunes:explicit>';
+            }
+            ?>
             <pubDate><?php the_date('r');?></pubDate>
         </item>
         <?php endwhile; ?>

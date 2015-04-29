@@ -37,9 +37,9 @@
             @include justify-content(center);
             cursor: pointer;
             .dashicons {
-                font-size: 8rem;
-                width: 8rem;
-                height: 8rem;
+                font-size: 100px;
+                width: 100px;
+                height: 100px;
                 text-shadow: 0px 1px 7px rgba(0,0,0,0.5);
                 &:not(.paused) {
                     &:before {

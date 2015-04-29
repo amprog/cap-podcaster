@@ -3,10 +3,6 @@
  * ACF Fields and Settings
  */
 
-if( function_exists('acf_add_options_page') ) {
-	acf_add_options_page();
-}
-
 if( function_exists('register_field_group') ) {
 
     register_field_group(array (
