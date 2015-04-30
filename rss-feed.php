@@ -83,6 +83,8 @@ $podcast_subtitle        = get_field('podcast_subtitle', 'options');
             $is_episode_explicit = '<itunes:explicit>clean</itunes:explicit>';
         }?>
 
+        <?php echo $is_episode_explicit;?>
+
         <?php foreach (get_field('podcast_categories','options') as $key => $value) {
             echo '<itunes:category text="'.htmlspecialchars($value).'"/>';
         }?>

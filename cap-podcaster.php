@@ -66,7 +66,7 @@ function cap_podcast_register() {
 add_action( 'init', 'cap_podcast_register', 0 );
 
 // Create image size for podcast player and XML feed.
-add_image_size( 'cap-podcast-thumbnail', 600, 600, true );
+add_image_size( 'cap-podcast-thumbnail', 1400, 1400, true );
 
 // Register stylesheet, scripts, and icons.
 function cap_podcast_styles_scripts() {
