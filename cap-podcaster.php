@@ -70,16 +70,17 @@ add_image_size( 'cap-podcast-thumbnail', 1400, 1400, true );
 
 // Register stylesheet, scripts, and icons.
 function cap_podcast_styles_scripts() {
-    wp_register_style( 'cap-podcaster',  plugin_dir_url( __FILE__ ) . 'cap-podcaster.css' );
-    wp_enqueue_style( 'cap-podcaster' );
-    wp_enqueue_style( 'dashicons' );
+	if ( is_singular('cap_podcast') || is_post_type_archive('cap_podcast') ) {
+		wp_register_style( 'cap-podcaster',  plugin_dir_url( __FILE__ ) . 'cap-podcaster.css' );
+	    wp_enqueue_style( 'cap-podcaster' );
+	    wp_enqueue_style( 'dashicons' );
 
-	// Special Effects
-	// We need a check for waves if present then use that if not then use this.
-	wp_register_style( 'waves-css',  plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.css' );
-    wp_enqueue_style( 'waves-css' );
-	wp_enqueue_script( 'waves-js', plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.js', array(), '1.0', true );
-
+		// Special Effects
+		// We need a check for waves if present then use that if not then use this.
+		wp_register_style( 'waves-css',  plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.css' );
+	    wp_enqueue_style( 'waves-css' );
+		wp_enqueue_script( 'waves-js', plugin_dir_url( __FILE__ ) . 'bower_components/waves/dist/waves.js', array(), '1.0', true );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'cap_podcast_styles_scripts' );
 
