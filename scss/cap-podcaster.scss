@@ -35,8 +35,8 @@
 }
 .episode-header {
     .episode-artwork {
-        @include aspect-ratio(4, 3);
-        background-size: cover;
+        @include aspect-ratio(600, 600);
+        background-size: contain;
         color: #fff;
         #play-episode {
             color: #fff;
@@ -70,14 +70,17 @@
     .episode-artwork-container,
     .episode-info {
         display: table-cell;
-        width: 50%;
         vertical-align: middle;
         @include media($palm){
             display: block;
-            width: 100%;
+            width: 100%!important;
         }
     }
+    .episode-artwork-container {
+        width: 45%;
+    }
     .episode-info {
+        width: 55%;
         padding: 16px;
         h4,h2 {
             margin: 0;
@@ -90,6 +93,17 @@
             text-align: justify;
             display: block;
             padding: 1em;
+        }
+    }
+}
+
+
+// TKP Specific
+#podcast-columns {
+    & > div {
+        @include media($palm){
+            display: block;
+            width: 100%!important;
         }
     }
 }

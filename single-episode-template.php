@@ -91,7 +91,7 @@ function cap_podcast_player( $id = null, $player_type = 'default' ) {
 }
 
 function cap_podcast_single_display($content) {
-    if (is_singular()) {
+    if (is_singular('cap_podcast')) {
         $player = cap_podcast_player();
         $content = $player.$content;
     }
